@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合同查询</title>
+
+    <script src="vue.js"></script>
+    <script src="vue-resource.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+    <table>
+        <tr>
+            <td>交易编号:</td>
+            <td><input type="text" v-model="contractId"></td>
+        </tr>
+        <tr>
+            <td>合同哈希:</td>
+            <td><input type="text" v-model="id"></td>
+        </tr>
+    </table>
+
+    <button v-on:click="check">合同查询</button>
+
+</div>
+
+</body>
+
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            contractId:"211004197001010000",
+            id:""
+        },
+        methods:{
+            check:function () {
+                var url="http://localhost:8080/contract"
+                var params={"contractId":this.contractId}
+
+                this.$http.get(
+                    url,
+                    // params,// 如果get请求这样传参数是存在问题的
+                    // get请求传递参数是下面的格式
+                    {params:params},
+                    {emulateJSON:true}
+                ).then(
+                    function (response) {
+                        this.id = response
+                        console.log(response)
+                    },
+                    function (response) {
+                        console.log(response)
+                    }
+                )
+            }
+        }
+    });
+</script>
+</html>

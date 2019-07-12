@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>征信认证</title>
+
+    <script src="vue.js"></script>
+    <script src="vue-resource.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+    <table>
+        <tr>
+            <td>身份证:</td>
+            <td><input type="text" v-model="id"></td>
+        </tr>
+        <tr>
+            <td>信用等级:</td>
+            <td><input type="text" v-model="rank"></td>
+        </tr>
+    </table>
+
+    <button v-on:click="check">信用等级查询</button>
+
+</div>
+
+</body>
+
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            id:"211004197001010000",
+            rank:"A"
+        },
+        methods:{
+            check:function () {
+                var url="http://localhost:8080/credit"
+                var params={"id":this.id,"rank":this.rank}
+
+                this.$http.get(
+                    url,
+                    // params,// 如果get请求这样传参数是存在问题的
+                    // get请求传递参数是下面的格式
+                    {params:params},
+                    {emulateJSON:true}
+                ).then(
+                    function (response) {
+                        console.log(response)
+                    },
+                    function (response) {
+                        console.log(response)
+                    }
+                )
+            }
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>征信认证管理</title>
+
+    <script src="vue.js"></script>
+    <script src="vue-resource.js"></script>
+</head>
+<body>
+<div id="app">
+
+    上传征信认证文件:<input type="file" @change="onUpload"><br>
+    <button v-on:click="upload">上传</button>
+
+</div>
+
+</body>
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            formData:new FormData()
+        },
+        methods:{
+            onUpload(e){
+                // 当上传文件内容变动时候
+                this.formData.append('credit',e.target.files[0])
+                this.formData.append('type','csv')
+            },
+            upload:function () {
+                // 上传文件
+                var url = "http://localhost:8080/credit"
+                this.$http.post(url,this.formData).then(
+                    function (repponse) {
+                        console.log(repponse)
+                    },
+                    function (repponse) {
+                        console.log(repponse)
+                    }
+
+                )
+
+            }
+        }
+    })
+</script>
+</html>

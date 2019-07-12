@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>交易信息查询</title>
+
+    <script src="vue.js"></script>
+    <script src="vue-resource.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+    <table>
+        <tr>
+            <td>订单编号:</td>
+            <td><input type="text" v-model="orderId"></td>
+        </tr>
+        <tr>
+            <td>分期数:</td>
+            <td><input type="text" v-model="issue"></td>
+        </tr>
+        <tr>
+            <td>租户:</td>
+            <td><input type="text" v-model="from"></td>
+        </tr>
+        <tr>
+            <td>房东:</td>
+            <td><input type="text" v-model="to"></td>
+        </tr>
+        <tr>
+            <td>租金:</td>
+            <td><input type="text" v-model="rent"></td>
+        </tr>
+        <tr>
+            <td>是否逾期:</td>
+            <td><input type="text" v-model="overdue"></td>
+        </tr>
+        <tr>
+            <td>交易类型:</td>
+            <td><input type="text" v-model="types"></td>
+        </tr>
+        <tr>
+            <td>备注:</td>
+            <td><input type="text" v-model="desc"></td>
+        </tr>
+    </table>
+
+    <button v-on:click="check">查询</button>
+
+</div>
+
+</body>
+
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            orderId:"",
+            issue:"",
+            from:"",
+            to:"",
+            rent:"",
+            overdue:"",
+            types:"",
+            desc:""
+
+        },
+        methods:{
+            check:function () {
+                var url="http://localhost:8080/transaction"
+                var params={"orderId":this.orderId,"issue":this.issue}
+
+                this.$http.get(
+                    url,
+                    // params,// 如果get请求这样传参数是存在问题的
+                    // get请求传递参数是下面的格式
+                    {params:params},
+                    {emulateJSON:true}
+                ).then(
+                    function (response) {
+                        this.from = response.from
+                        this.to = response.to
+                        this.rent = response.rent
+                        this.overdue = response.overdue
+                        this.types = response.types
+                        this.desc = response.desc
+   
+                        console.log(response)
+                    },
+                    function (response) {
+                        console.log(response)
+                    }
+                )
+            }
+        }
+    });
+</script>
+</html>

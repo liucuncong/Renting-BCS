@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人认证</title>
+
+    <script src="vue.js"></script>
+    <script src="vue-resource.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+    <table>
+        <tr>
+            <td>姓名:</td>
+            <td><input type="text" v-model="name"></td>
+        </tr>
+        <tr>
+            <td>身份证:</td>
+            <td><input type="text" v-model="id"></td>
+        </tr>
+    </table>
+
+    <button v-on:click="check">认证</button>
+
+</div>
+
+</body>
+
+<script>
+    var vm =new Vue({
+        el:'#app',
+        data:{
+            name:"张三",
+            id:"211004197001010000"
+        },
+        methods:{
+            check:function () {
+                var url="http://localhost:8080/auth"
+                var params={"name":this.name,"id":this.id}
+
+                this.$http.get(
+                    url,
+                    // params,// 如果get请求这样传参数是存在问题的
+                    // get请求传递参数是下面的格式
+                    {params:params},
+                    {emulateJSON:true}
+                ).then(
+                    function (response) {
+                        console.log(response)
+                    },
+                    function (response) {
+                        console.log(response)
+                    }
+                )
+            }
+        }
+    });
+</script>
+</html>
